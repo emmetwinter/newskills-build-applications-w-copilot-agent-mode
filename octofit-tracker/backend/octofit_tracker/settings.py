@@ -45,11 +45,23 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# Add additional configurations
+INSTALLED_APPS += [
+    'rest_framework',
+    'djongo',
+    'corsheaders',
+    'octofit_tracker',
+]
+
+MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
+
 # MongoDB database connection
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'octofit_db',
+        'HOST': 'localhost',
+        'PORT': 27017,
     }
 }
 
@@ -148,6 +160,5 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-INSTALLED_APPS += [
-    'octofit_tracker',
-]
+# Remove duplicate entry for 'corsheaders'
+INSTALLED_APPS = list(dict.fromkeys(INSTALLED_APPS))
